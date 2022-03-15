@@ -1,11 +1,10 @@
 import { useAuth } from "../hooks/useAuth";
 import { GiHamburgerMenu } from 'react-icons/gi'
-import { FaDollarSign, FaRegUser, FaSignInAlt, FaSignOutAlt, FaSteamSymbol } from 'react-icons/fa'
-import { useEffect } from "react";
+import { FaDollarSign, FaSignInAlt, FaSignOutAlt, FaSteamSymbol } from 'react-icons/fa'
 import { FiSettings } from 'react-icons/fi'
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { logout, setjwtToken } from "../redux/userSlice";
+import { logout } from "../redux/userSlice";
 import { Link } from "react-router-dom";
 
 export const Navbar = () => {
@@ -32,12 +31,12 @@ export const Navbar = () => {
                     <div className="flex items-center gap-5">
                         <p className="flex items-center font-bold text-2xl">
                             <FaDollarSign fill="green" size={22}  />
-                            <span className="text-white">{userInfo.balance?.toFixed(2)}</span>
+                            <span className="text-white">{userInfo?.balance?.toFixed(2)}</span>
                         </p>
                         <Link to='/me'>
                             <div className="avatar pt-1">
                                 <div className="w-10 rounded-full">
-                                    <img src={steamInfo.avatarmedium} />
+                                    <img src={steamInfo?.avatarmedium} />
                                 </div>
                             </div>
                         </Link>
@@ -51,7 +50,7 @@ export const Navbar = () => {
                                 <Link to='/me'>
                                     <div className="flex items-center gap-2">
                                         <FaSteamSymbol size={20} /> 
-                                        <h1 className="text-primary font-bold">{steamInfo.nickname}</h1>
+                                        <h1 className="text-primary font-bold">{steamInfo?.nickname}</h1>
                                     </div>
                                 </Link>
                             </li>

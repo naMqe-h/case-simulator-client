@@ -29,6 +29,7 @@ export const useAuth = () => {
 
           const steamResult = await axios.get(`${import.meta.env.VITE_API_URL}/user/steam`, { headers })
           const result = await axios.get(`${import.meta.env.VITE_API_URL}/user/info`, { headers })
+
           dispatch(setSteamUser(steamResult.data[0]))
           dispatch(setUserInfo(result.data[0]))
           dispatch(setjwtToken(token))

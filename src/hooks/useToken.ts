@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
-import { setjwtToken, setSteamUser, setUserInfo } from "../redux/userSlice"
+import { logout, setjwtToken, setSteamUser, setUserInfo } from "../redux/userSlice"
 
 export const useToken = () => {
     const dispatch = useDispatch()
@@ -19,8 +19,15 @@ export const useToken = () => {
     
             const steamResult = await axios.get(`${import.meta.env.VITE_API_URL}/user/steam`, { headers })
             const result = await axios.get(`${import.meta.env.VITE_API_URL}/user/info`, { headers })
-            dispatch(setSteamUser(steamResult.data[0]))
-            dispatch(setUserInfo(result.data[0]))
+
+            if(result.data.error || steamResult.data.error ) {
+                localStorage.removeItem('jwtToken')
+                dispatch(logout)
+            } else {
+                dispatch(setSteamUser(steamResult.data[0]))
+                dispatch(setUserInfo(result.data[0]))
+            }
+
             setIsReady(true)
         } else {
             setIsReady(true)

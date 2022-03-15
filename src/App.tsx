@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { Provider, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Dashboard } from "./components/Dashboard";
+import { Dashboard } from "./components/dashboard/Dashboard";
 import { Navbar } from "./components/Navbar";
 import { Profile } from "./components/Profile";
 import { useToken } from "./hooks/useToken";
@@ -27,20 +27,16 @@ export const App = () => {
   }, [userInfo])
 
   useEffect(() => {
-    console.log(`jwtToken`, jwtToken);
-  }, [jwtToken])
-
-  useEffect(() => {
     console.log(`isLogin`, isLogin);
   }, [isLogin])
 
   return (
     <BrowserRouter>
-      <div className="w-screen overflow-hidden flex flex-col">
+      <div className="h-screen overflow-hidden flex flex-col">
         {isReady ? (
           <>
             <Navbar />
-            <div className="h-[800px] bg-base-300">
+            <div className="overflow-x-hidden bg-base-300">
               <Routes>
                 <Route path='/' element={<Dashboard />} />
                 <Route path='/me' element={<Profile />} />
