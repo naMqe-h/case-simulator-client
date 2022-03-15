@@ -11,7 +11,7 @@ export const useToken = () => {
         setIsReady(false)
         const tempToken = localStorage.getItem("jwtToken")
 
-        if(tempToken) {
+        if(tempToken) { 
             dispatch(setjwtToken(tempToken))
             const headers = {
                 "Authorization": 'Bearer ' + tempToken,

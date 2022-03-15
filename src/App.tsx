@@ -4,15 +4,17 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Dashboard } from "./components/dashboard/Dashboard";
 import { Navbar } from "./components/Navbar";
 import { Profile } from "./components/Profile";
+import { useAllItems } from "./hooks/useAllItems";
 import { useToken } from "./hooks/useToken";
-import { RootState, store } from "./redux/store";
+import { RootState } from "./redux/store";
 
 export const App = () => {
   const { getToken, isReady } = useToken()
+  const { getAllItems } = useAllItems()
   const steamInfo = useSelector((state: RootState) => state.user.steamInfo)
   const userInfo = useSelector((state: RootState) => state.user.userInfo)
-  const jwtToken = useSelector((state: RootState) => state.user.jwtToken)
   const isLogin = useSelector((state: RootState) => state.user.isLogin)
+  const allItems = useSelector((state: RootState) => state.items.items)
 
   useEffect(() => {
     getToken()
@@ -25,10 +27,20 @@ export const App = () => {
   useEffect(() => {
     console.log(`userInfo`, userInfo);
   }, [userInfo])
-
+  
   useEffect(() => {
     console.log(`isLogin`, isLogin);
+    
+    if(isLogin) {
+      getAllItems()
+    }
+    
   }, [isLogin])
+  
+  
+    useEffect(() => {
+      console.log(`allItems`, allItems);
+    }, [allItems])
 
   return (
     <BrowserRouter>
