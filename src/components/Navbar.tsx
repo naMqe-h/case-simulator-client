@@ -21,11 +21,12 @@ export const Navbar = () => {
 
     return (
         <div className="bg-neutral p-2 pl-7 h-[70px] flex">
-            <Link to='/' className="flex-1">
+            <Link to='/'>
                 <h1 className="text-primary text-4xl">
                     Skycase
                 </h1>
             </Link>
+            <div className="flex-1"></div>
             {isLogin ? (
                 <div className="flex">
                     <div className="flex items-center gap-5">
@@ -62,6 +63,19 @@ export const Navbar = () => {
                                     </div>
                                 </Link>
                             </li>
+                            {userInfo.role === 99 && (
+                                <>
+                                    <li className="divider"></li>
+                                    <li>
+                                        <Link to='/admin/home'>
+                                            <div className="flex items-center gap-2">
+                                                <FiSettings size={20} /> 
+                                                <h1 className="text-primary font-bold">Admin panel</h1>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                </>
+                            )}
                             <li className="divider"></li>
                             <li>
                                 <button onClick={handleLogout} className='text-primary opacity-80' >

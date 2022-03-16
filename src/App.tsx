@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Dashboard } from "./components/dashboard/Dashboard";
+import { Dashboard as AdminDashboard } from "./components/admin/Dashboard";
 import { Navbar } from "./components/Navbar";
-import { Profile } from "./components/Profile";
+import { Profile } from "./components/profile/Profile";
 import { useAllItems } from "./hooks/useAllItems";
 import { useToken } from "./hooks/useToken";
 import { RootState } from "./redux/store";
@@ -18,6 +19,7 @@ export const App = () => {
 
   useEffect(() => {
     getToken()
+    getAllItems()
   }, [])
 
   useEffect(() => {
@@ -27,16 +29,6 @@ export const App = () => {
   useEffect(() => {
     console.log(`userInfo`, userInfo);
   }, [userInfo])
-  
-  useEffect(() => {
-    console.log(`isLogin`, isLogin);
-    
-    if(isLogin) {
-      getAllItems()
-    }
-    
-  }, [isLogin])
-  
   
     useEffect(() => {
       console.log(`allItems`, allItems);
@@ -48,10 +40,11 @@ export const App = () => {
         {isReady ? (
           <>
             <Navbar />
-            <div className="overflow-x-hidden bg-base-300">
+            <div className="overflow-x-hidden bg-base-300 h-[800px]">
               <Routes>
                 <Route path='/' element={<Dashboard />} />
                 <Route path='/me' element={<Profile />} />
+                <Route path='/admin/:type' element={<AdminDashboard />} />
               </Routes>
             </div>
           </>
