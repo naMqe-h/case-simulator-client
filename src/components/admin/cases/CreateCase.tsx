@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
 import { FaBuffer } from "react-icons/fa"
 import { MdOutlineDriveFileRenameOutline } from 'react-icons/md'
+import { useSelector } from "react-redux"
+import { RootState } from "../../../redux/store"
+import { SingleItem } from "./SingleItem"
 
 const images = [
     'https://api.daddyskins.com/images/cases/background/phpCf2N3v.png',
@@ -11,8 +14,10 @@ const images = [
 ]
 
 export const CreateCase = () => {
+    const allItems = useSelector((state: RootState) => state.items.items)
     const [caseName, setCaseName] = useState('')
     const [caseImage, setCaseImage] = useState('')
+    const [itemsPage, setItemsPage] = useState(1)
 
     return (
         <div className="flex flex-col gap-8 mt-4">
@@ -39,6 +44,29 @@ export const CreateCase = () => {
                         <img src={item} onClick={() => setCaseImage(item)} className={`w-full ${item === caseImage && 'border-b-2'} `} />
                     </div>
                 ))}
+            </div>
+
+            <div className="alert shadow-lg px-10 h-[800px] overflow-y-hidden items-start flex-col">
+                <div className="flex w-full h-[60px]">
+                    <div className="btn-group">
+                        {itemsPage === 1 ? (
+                            <button disabled className="btn">«</button>
+                            ) : (
+                            <button onClick={() => setItemsPage(prev => prev - 1)} className="btn">«</button>
+                        )}
+                        <button className="btn">Page {itemsPage}</button>
+                        {itemsPage === (Object.values(allItems).length - 1) ? (
+                            <button disabled className="btn">»</button>
+                            ) : (
+                            <button onClick={() => setItemsPage(prev => prev + 1)} className="btn">»</button>
+                        )}
+                    </div>
+                </div>
+                <div className="flex flex-wrap h-[740px] overflow-y-scroll">
+                    {allItems[itemsPage-1]?.map(item => (
+                        <SingleItem item={item} key={item.id} />
+                    ))}
+                </div>
             </div>
         </div>
     )

@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Dashboard } from "./components/dashboard/Dashboard";
 import { Dashboard as AdminDashboard } from "./components/admin/Dashboard";
 import { Navbar } from "./components/Navbar";
-import { Profile } from "./components/profile/Profile";
+import { Profile } from "./components/Profile/Profile";
 import { useAllItems } from "./hooks/useAllItems";
 import { useToken } from "./hooks/useToken";
 import { RootState } from "./redux/store";
@@ -23,16 +23,12 @@ export const App = () => {
   }, [])
 
   useEffect(() => {
-    console.log(`steamInfo`, steamInfo);
-  }, [steamInfo])
-
-  useEffect(() => {
     console.log(`userInfo`, userInfo);
   }, [userInfo])
   
-    useEffect(() => {
-      console.log(`allItems`, allItems);
-    }, [allItems])
+    // useEffect(() => {
+    //   console.log(`allItems`, allItems);
+    // }, [allItems])
 
   return (
     <BrowserRouter>

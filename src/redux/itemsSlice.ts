@@ -4,11 +4,11 @@ import { RootState } from "./store";
 
 
 interface itemsSliceInterface {
-    items: singleItem[]
+    items: {[key: number] : singleItem[]}
 }
 
 const initialState: itemsSliceInterface = {
-    items: []
+    items: {}
 }
 
 export const itemsSlice = createSlice({
