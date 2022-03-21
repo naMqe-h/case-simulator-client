@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
-import { FaBuffer } from "react-icons/fa"
+import { FaBuffer, FaDollarSign } from "react-icons/fa"
 import { MdOutlineDriveFileRenameOutline } from 'react-icons/md'
 import { useSelector } from "react-redux"
 import { RootState } from "../../../redux/store"
+import { singleItem } from "../../../utils/Interfaces"
 import { SingleItem } from "./SingleItem"
 
 const images = [
@@ -15,9 +16,38 @@ const images = [
 
 export const CreateCase = () => {
     const allItems = useSelector((state: RootState) => state.items.items)
+    const [itemsPage, setItemsPage] = useState(1)
+    
     const [caseName, setCaseName] = useState('')
     const [caseImage, setCaseImage] = useState('')
-    const [itemsPage, setItemsPage] = useState(1)
+    const [itemsPercent, setItemsPercent] = useState<{ [key: number]: number }>({})
+    const [chosenItems, setChosenItems] = useState<number[]>([])
+    const [chosenItemsInfo, setChosenItemsInfo] = useState<singleItem[]>([])
+
+    const [sumPercent, setSumPercent] = useState<number>()
+
+    const addItem = (id: number, item: singleItem) => {
+        setChosenItems(prev => [...prev, id ])
+        setChosenItemsInfo(prev => [...prev, item ])
+    }
+
+    const removeItem = (id: number) => {
+        setChosenItems(prev => prev.filter(x => x !== id))
+        setChosenItemsInfo(prev => prev.filter(x => x.id !== id))
+    }
+
+    const validateSum = (percent: number) => {
+        console.log(percent);
+    }
+
+    useEffect(() => {
+        console.log(chosenItemsInfo);
+        console.log(chosenItems);
+    }, [chosenItemsInfo, chosenItems])
+
+    useEffect(() => {
+        console.log(itemsPercent);
+    }, [itemsPercent])
 
     return (
         <div className="flex flex-col gap-8 mt-4">
@@ -64,10 +94,31 @@ export const CreateCase = () => {
                 </div>
                 <div className="flex flex-wrap h-[740px] overflow-y-scroll">
                     {allItems[itemsPage-1]?.map(item => (
-                        <SingleItem item={item} key={item.id} />
+                        <SingleItem item={item} removeItem={removeItem} addItem={addItem} key={item.id} />
                     ))}
                 </div>
             </div>
+
+            <div className="alert shadow-lg flex-col items-start">
+                {chosenItemsInfo.map(item => (
+                    <div key={item.id} className="w-full h-[80px] flex justify-between items-center">
+                        <div className="flex items-center gap-4">
+                            <img src={item.image} alt={item.hashName} width='90px' />
+                            <h1 className="text-lg font-bold text-primary">{item.hashName}</h1>
+                        </div>
+                        <div className="mr-10 flex gap-16 items-center">
+                            <div className="badge badge-lg badge-neutral">
+                                <FaDollarSign className='text-green-500' />
+                                <h1 className='text-white font-bold text-md'>
+                                    {item.price}
+                                </h1>
+                            </div>
+                            <input onChange={(e) => setItemsPercent(prev => ({ ...prev, [item.id]: +e.target.value }))} type="number" placeholder="Type %" className="input input-bordered w-[100px]" />
+                        </div>
+                    </div>
+                ))}
+            </div>
+
         </div>
     )
 }
