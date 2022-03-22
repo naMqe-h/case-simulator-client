@@ -36,7 +36,7 @@ export const App = () => {
         {isReady ? (
           <>
             <Navbar />
-            <div className="overflow-x-hidden bg-base-300 h-[800px]">
+            <div className="overflow-x-hidden bg-base-300 h-screen">
               <Routes>
                 <Route path='/' element={<Dashboard />} />
                 <Route path='/me' element={<Profile />} />

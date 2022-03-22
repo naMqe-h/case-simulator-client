@@ -17,14 +17,15 @@ const images = [
 export const CreateCase = () => {
     const allItems = useSelector((state: RootState) => state.items.items)
     const [itemsPage, setItemsPage] = useState(1)
+    const [sumPercent, setSumPercent] = useState<number>(0)
     
     const [caseName, setCaseName] = useState('')
     const [caseImage, setCaseImage] = useState('')
     const [itemsPercent, setItemsPercent] = useState<{ [key: number]: number }>({})
     const [chosenItems, setChosenItems] = useState<number[]>([])
     const [chosenItemsInfo, setChosenItemsInfo] = useState<singleItem[]>([])
+    const [casePrice, setCasePrice] = useState<number>(0)
 
-    const [sumPercent, setSumPercent] = useState<number>()
 
     const addItem = (id: number, item: singleItem) => {
         setChosenItems(prev => [...prev, id ])
@@ -36,18 +37,20 @@ export const CreateCase = () => {
         setChosenItemsInfo(prev => prev.filter(x => x.id !== id))
     }
 
-    const validateSum = (percent: number) => {
-        console.log(percent);
-    }
-
     useEffect(() => {
-        console.log(chosenItemsInfo);
-        console.log(chosenItems);
-    }, [chosenItemsInfo, chosenItems])
+        Object.values(itemsPercent).length > 0 && setSumPercent(Object.values(itemsPercent).reduce((a, b) => a + b))
+        
+        let newPrice = 0
+        for(const [key, value] of Object.entries(itemsPercent)) {
+            chosenItemsInfo.forEach(item => {
+                if(item.id === +key) newPrice += item.price * value / 100
+            })
+        }
+        newPrice *= 1.12
+        setCasePrice(newPrice)
 
-    useEffect(() => {
-        console.log(itemsPercent);
     }, [itemsPercent])
+    
 
     return (
         <div className="flex flex-col gap-8 mt-4">
@@ -110,13 +113,28 @@ export const CreateCase = () => {
                             <div className="badge badge-lg badge-neutral">
                                 <FaDollarSign className='text-green-500' />
                                 <h1 className='text-white font-bold text-md'>
-                                    {item.price}
+                                    {item.price.toFixed(2)}
                                 </h1>
                             </div>
                             <input onChange={(e) => setItemsPercent(prev => ({ ...prev, [item.id]: +e.target.value }))} type="number" placeholder="Type %" className="input input-bordered w-[100px]" />
                         </div>
                     </div>
                 ))}
+            </div>
+
+            <div className="alert shadow-lg p-10">
+                <div className="flex justify-start gap-6">
+                    <h1 className="text-lg font-bold text-primary">Summary</h1>
+                    <div className="badge badge-lg badge-outline text-primary">Percent sum: <span className="font-bold ml-2">{sumPercent}%</span></div>
+                    <div className="badge badge-lg badge-outline text-primary gap-2">
+                        <span>Case price:</span>
+                        <span className="flex items-center font-bold">
+                            <FaDollarSign className='text-green-500' />
+                            {casePrice.toFixed(2)}
+                        </span>
+                    </div>
+                </div>
+                <button className="btn btn-outline btn-success">Create case</button>
             </div>
 
         </div>

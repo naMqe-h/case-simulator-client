@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react'
 import { FaDollarSign } from 'react-icons/fa'
+import { BsCheckLg } from 'react-icons/bs'
 import { singleItem } from '../../../utils/Interfaces'
 
 interface SingleItemProps {
@@ -24,12 +25,17 @@ export const SingleItem: React.FC<SingleItemProps> = ({ item, addItem, removeIte
     }
 
     return (
-        <div onClick={handleAdd} className={`w-[200px] h-[200px] bg-base-300 mx-1 relative overflow-hidden`} style={style} >
+        <div onClick={handleAdd} className={`w-[200px] h-[200px] bg-base-300 mx-1 relative overflow-hidden cursor-pointer`} style={style} >
+            {isAdded && (
+                <div className="absolute w-full h-full bg-opacity-50 bg-green-400 flex justify-center items-center">
+                    <BsCheckLg size={64} className='text-white' />
+                </div>
+            )}
             <img src={item.image} alt={item.hashName} className='w-full' />
             <div className="absolute top-0 right-0  flex items-center">
                 <FaDollarSign className='text-green-500' />
                 <h1 className='text-white font-bold text-md'>
-                    {item.price}
+                    {item.price.toFixed(2)}
                 </h1>
             </div>
             <div className="absolute bottom-2 h-16 px-3">
