@@ -3,8 +3,11 @@ import { FaBuffer, FaDollarSign } from "react-icons/fa"
 import { MdOutlineDriveFileRenameOutline } from 'react-icons/md'
 import { useSelector } from "react-redux"
 import { RootState } from "../../../redux/store"
-import { singleItem } from "../../../utils/Interfaces"
+import { singleCase, singleItem } from "../../../utils/Interfaces"
 import { SingleItem } from "./SingleItem"
+import axios from "axios"
+import { toast } from "react-toastify"
+import { useNavigate } from "react-router-dom"
 
 const images = [
     'https://api.daddyskins.com/images/cases/background/phpCf2N3v.png',
@@ -15,25 +18,26 @@ const images = [
 ]
 
 export const CreateCase = () => {
+    const user = useSelector((state: RootState) => state.user.steamInfo)
     const allItems = useSelector((state: RootState) => state.items.items)
+    const token = useSelector((state: RootState) => state.user.jwtToken)
+    const navigate = useNavigate()
+
     const [itemsPage, setItemsPage] = useState(1)
     const [sumPercent, setSumPercent] = useState<number>(0)
     
     const [caseName, setCaseName] = useState('')
     const [caseImage, setCaseImage] = useState('')
     const [itemsPercent, setItemsPercent] = useState<{ [key: number]: number }>({})
-    const [chosenItems, setChosenItems] = useState<number[]>([])
     const [chosenItemsInfo, setChosenItemsInfo] = useState<singleItem[]>([])
     const [casePrice, setCasePrice] = useState<number>(0)
 
 
     const addItem = (id: number, item: singleItem) => {
-        setChosenItems(prev => [...prev, id ])
         setChosenItemsInfo(prev => [...prev, item ])
     }
 
     const removeItem = (id: number) => {
-        setChosenItems(prev => prev.filter(x => x !== id))
         setChosenItemsInfo(prev => prev.filter(x => x.id !== id))
     }
 
@@ -50,6 +54,31 @@ export const CreateCase = () => {
         setCasePrice(newPrice)
 
     }, [itemsPercent])
+
+    const handleSubmit = async () => {
+        let itemsPercentString = ''
+
+        for (const [key, value] of Object.entries(itemsPercent)) itemsPercentString += `${key}:${value}/`
+
+        const newCase: singleCase = {
+            name: caseName,
+            image: caseImage,
+            items: itemsPercentString,
+            price: +casePrice.toFixed(2),
+            opened: 0,
+            createdBy: user.steamid,
+        }
+
+        const headers = {
+            "Authorization": 'Bearer ' + token,
+        }
+
+        const result = await axios.post('http://localhost:4000/case/create', newCase, { headers })
+        
+        result.status === 200 && toast.success('Case created successfully')
+        navigate('/')
+
+    }
     
 
     return (
@@ -134,7 +163,7 @@ export const CreateCase = () => {
                         </span>
                     </div>
                 </div>
-                <button className="btn btn-outline btn-success">Create case</button>
+                <button onClick={handleSubmit} className="btn btn-outline btn-success">Create case</button>
             </div>
 
         </div>

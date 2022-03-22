@@ -8,10 +8,14 @@ import { Profile } from "./components/Profile/Profile";
 import { useAllItems } from "./hooks/useAllItems";
 import { useToken } from "./hooks/useToken";
 import { RootState } from "./redux/store";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useAllCases } from "./hooks/useAllCases";
 
 export const App = () => {
   const { getToken, isReady } = useToken()
   const { getAllItems } = useAllItems()
+  const { getAllCases } = useAllCases()
   const steamInfo = useSelector((state: RootState) => state.user.steamInfo)
   const userInfo = useSelector((state: RootState) => state.user.userInfo)
   const isLogin = useSelector((state: RootState) => state.user.isLogin)
@@ -20,6 +24,7 @@ export const App = () => {
   useEffect(() => {
     getToken()
     getAllItems()
+    getAllCases()
   }, [])
 
   useEffect(() => {
@@ -48,6 +53,17 @@ export const App = () => {
           <h1>Loading...</h1>
         )}
       </div>
+      <ToastContainer
+          position="bottom-left"
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
     </BrowserRouter>
   )
 }

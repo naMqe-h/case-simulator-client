@@ -12,7 +12,7 @@ const initialState: itemsSliceInterface = {
 }
 
 export const itemsSlice = createSlice({
-    name: 'user',
+    name: 'items',
     initialState,
     reducers: {
         setAllItems: (state, action) => {

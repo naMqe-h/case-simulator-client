@@ -10,3 +10,13 @@ export interface singleItem {
     priveMax: number
     updatedAt: string
 }
+
+export interface singleCase {
+    id?: number
+    name: string
+    image: string
+    items: string
+    price: number
+    opened: number
+    createdBy: string
+}
