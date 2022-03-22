@@ -1,6 +1,6 @@
 import { FaDollarSign } from "react-icons/fa"
 import { useNavigate } from "react-router-dom"
-import { singleCase } from "../../utils/Interfaces"
+import { singleCase } from "../../../utils/Interfaces"
 
 type CaseProps = {
     item: singleCase

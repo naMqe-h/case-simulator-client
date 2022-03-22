@@ -11,6 +11,7 @@ import { RootState } from "./redux/store";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAllCases } from "./hooks/useAllCases";
+import { Case } from "./components/case/Case";
 
 export const App = () => {
   const { getToken, isReady } = useToken()
@@ -46,6 +47,7 @@ export const App = () => {
                 <Route path='/' element={<Dashboard />} />
                 <Route path='/me' element={<Profile />} />
                 <Route path='/admin/:type' element={<AdminDashboard />} />
+                <Route path='/case/:id' element={<Case /> } />
               </Routes>
             </div>
           </>

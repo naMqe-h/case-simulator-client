@@ -1,4 +1,4 @@
-import { CaseList } from "./CaseList"
+import { CaseList } from "./caseList/CaseList"
 
 export const Dashboard = () => {
     return (
